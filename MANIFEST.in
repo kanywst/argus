@@ -1,2 +1,0 @@
-include nkap
-include src/nkap/config/*.yml

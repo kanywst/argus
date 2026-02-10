@@ -1,166 +1,116 @@
-# Nkap
+# ARGUS
 
-Nkap is a simple network reconnaissance tool. It can be used in CTFs and other penetration testing environments (e.g. OSCP, Hack The Box, Vulnhub)
+<p align="center">
+  <img src="logo.svg" alt="ARGUS Logo" width="500">
+</p>
 
-## Origin
+<p align="center">
+  <img src="https://img.shields.io/badge/VERSION-2.0.0-ff00ff?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/LICENSE-MIT-00ffff?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/CORE-RUST-ffff00?style=for-the-badge" alt="Built with Rust">
+  <img src="https://img.shields.io/badge/AGENT-HYPER--AUTONOMOUS-ff0000?style=for-the-badge" alt="AI Powered">
+</p>
 
-Nkap was inspired by AutoRecon.
+---
 
-## Features
+ARGUS is a hyper-autonomous network reconnaissance engine implemented in Rust. It eliminates the manual scripting layer of penetration testing by employing a Large Language Model (LLM) to analyze discovery data and orchestrate secondary reconnaissance tools in real-time.
 
-- Simple
-- Automatically executes the first thing that would be done in a penetration test environment.
+---
 
-## Requirements
+## EXECUTION LOG
 
-### Python 3
-
-```
-$ sudo apt install python3
-$ sudo apt install python3-pip
-```
-
-### Supporring packages
-
-```
-nmap
-nikto
-gobuster
-```
-
-```
-$ sudo apt install nmap nikto gobuster
+```text
+TARGET: 192.168.1.10
+[SYSTEM] INITIALIZING ASYNCHRONOUS RECONNAISSANCE ENGINE
+[OK] DISCOVERED: 22/TCP (SSH), 80/TCP (HTTP)
+[AGENT] ANALYSIS: WEB SERVER DETECTED ON PORT 80. PRIORITIZING SERVICE ENUMERATION.
+[AGENT] ACTION: RUN_NIKTO
+[AGENT] ACTION: RUN_GOBUSTER (DIRECTORY BRUTE-FORCE)
+[AGENT] STATUS: SENSITIVE DIRECTORY DISCOVERED (/ADMIN/LOGIN.PHP)
+[SYSTEM] RECONNAISSANCE CYCLE COMPLETE. REPORT GENERATED.
 ```
 
-## Installation
+## CORE SPECIFICATIONS
 
-```
-$ pip install git+https://github.com/kanywst/nkap
-```
+- PERFORMANCE: Built with Rust for zero-runtime overhead and memory safety.
+- AUTONOMY: Driven by the Rig-core framework for goal-oriented decision making.
+- ADAPTIVE: Maintains a dynamic context graph to adjust strategy based on tool output.
+- INTEGRATION: Native support for Nmap, Nikto, and Gobuster.
+- TOOLCHAIN: Managed via uv for deterministic builds and execution.
 
-## Usage
+## ARCHITECTURE
 
-```
-usage: nkap [-h] [-w WORDLIST] [-o OUTPUT_DIR] target
+- RUNTIME: Tokio (Asynchronous I/O)
+- FRAMEWORK: Rig (Intelligent Agent Graph)
+- DEPENDENCIES: Managed via uv
+- INTERFACE: Clap v4 (Typed CLI)
 
-Nkap is a simple network reconnaissance tool
+---
 
-positional arguments:
-  target                The target URL
+## INSTALLATION
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -w WORDLIST, --wordlist WORDLIST
-                        Path to the wordlist
-  -o OUTPUT_DIR, --output OUTPUT_DIR
-                        The output directory for results. Default: results
-```
-
-### Examples
-
-Scanning sinle target
-
-```
-$ nkap 192.168.2.133
-[NMAP]
-22/ssh          tcp open
-25/smtp         tcp open
-53/domain       tcp open
-80/http         tcp open
-111/rpcbind     tcp open
-42012/unknown   tcp open
-[*] Running port scan: 192.168.2.133:22
-[*] Running port scan: 192.168.2.133:25
-[*] Running port scan: 192.168.2.133:53
-[*] Running port scan: 192.168.2.133:80
-[*] Running port scan: 192.168.2.133:111
-[*] Running port scan: 192.168.2.133:42012
-
-[NIKTO]
----------------------------------------------------------------------------
-+ Server: Apache
-+ The anti-clickjacking X-Frame-Options header is not present.
-+ The X-XSS-Protection header is not defined. This header can hint to the user agent to protect against some forms of XSS
-+ The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type
-+ No CGI Directories found (use '-C all' to force check all possible dirs)
-+ OSVDB-3268: /games/: Directory indexing found.
-+ Entry '/games/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/dropbox/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/contact/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/search/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/archive/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/wp-admin/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/wp-content/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/wp-includes/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/comment-page-/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/trackback/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/xmlrpc.php' in robots.txt returned a non-forbidden or redirect HTTP code (301)
-+ Entry '/blackhole/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/mint/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ Entry '/feed/' in robots.txt returned a non-forbidden or redirect HTTP code (200)
-+ "robots.txt" contains 26 entries which should be manually viewed.
-+ Server may leak inodes via ETags, header found with file /, inode: d3, size: 54c550ee22d56, mtime: gzip
-+ Allowed HTTP Methods: OPTIONS, GET, HEAD, POST 
-+ OSVDB-3092: /archive/: This might be interesting...
-+ OSVDB-3092: /support/: This might be interesting...
-+ OSVDB-3092: /manual/: Web server manual found.
-+ OSVDB-3268: /manual/images/: Directory indexing found.
-+ OSVDB-3233: /icons/README: Apache default file found.
-+ /wp-admin/: Admin login page/section found.
-+ /phpmyadmin/: phpMyAdmin directory found
-+ 7943 requests: 0 error(s) and 28 item(s) reported on remote host
-+ End Time:           2020-07-19 10:12:28 (GMT9) (63 seconds)
----------------------------------------------------------------------------
-
-[GOBUSTER]
-[*] 200 OK
-        /robots.txt
-[*] 301 Moved Permanently
-        /archive
-        /blackhole
-        /blog
-        /contact
-        /control
-        /dropbox
-        /extend
-        /feed
-        /games
-        /manual
-        /mint
-        /phpmyadmin
-        /plugins
-        /search
-        /support
-        /tag
-        /themes
-        /trackback
-        /wp-content
-        /xmlrpc.php
-        /wp-admin
-        /wp-includes
-[*] 403 Forbidden
-        /.htpasswd
-        /.htpasswd.php
-        /.htaccess
-        /.htaccess.php
-        /server-status
-[*] Finished
+### VIA UV
+```bash
+git clone https://github.com/kanywst/argus
+cd argus
+uv build
 ```
 
-### Results
-
+### VIA CARGO
+```bash
+cargo install --path .
 ```
-.
-|
-└── scans/
-    ├── commands.log
-    ├── nmap.txt
-    ├── nikto.txt
-    ├── gobuster.txt
-    ├── tcp_22_ssh_nmap.txt
-    ├── tcp_25_smtp_nmap.txt
-    ├── tcp_53_domain_nmap.txt
-    ├── tcp_80_http_nmap.txt
-    └── tcp_42012_unknown_nmap.txt
- ```
 
+---
+
+## AGENT CONFIGURATION
+
+### LOCAL (OLLAMA)
+1. Install Ollama (ollama.com)
+2. Pull required model:
+   ```bash
+   ollama pull llama3
+   ```
+3. Execute Argus:
+   ```bash
+   argus <target> --ai --provider ollama --model llama3
+   ```
+
+### CLOUD (OPENAI)
+1. Set API key:
+   ```bash
+   export OPENAI_API_KEY="sk-..."
+   ```
+2. Execute Argus:
+   ```bash
+   argus <target> --ai
+   ```
+
+---
+
+## CLI ARGUMENTS
+
+```bash
+argus [OPTIONS] <TARGET>
+```
+
+| ARGUMENT | DESCRIPTION | DEFAULT |
+|:---|:---|:---|
+| --ai | Enable autonomous agent loop | false |
+| -w, --wordlist | Path to directory wordlist | /usr/share/dirb/wordlists/big.txt |
+| -o, --output | Output directory | results |
+| --provider | AI backend (openai, ollama) | openai |
+| --model | LLM model name | gpt-4o |
+
+---
+
+## DISCLAIMER
+
+This software is provided for authorized security testing and educational purposes only. Unauthorized access to computer systems is illegal. The developers assume no liability for the misuse of this tool.
+
+## LICENSE
+
+MIT License. See LICENSE for details.
+
+---
+<p align="center">DEVELOPED BY KANYWST</p>

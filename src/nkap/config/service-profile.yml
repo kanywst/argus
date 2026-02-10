@@ -1,9 +1,0 @@
-default:
-  nmap:
-    command: "nmap -p- --min-rate 10000 {address}"
-  nmap-extra:
-    command: "nmap -Pn --script vuln -p {port} {address}"
-  gobuster:
-    command: "gobuster dir -u {address} -w {wordlist} -t 50 -q"
-  nikto:
-    command: "nikto -h {address}"

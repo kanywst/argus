@@ -1,0 +1,22 @@
+[package]
+name = "argus"
+version = "2.0.0"
+edition = "2021"
+authors = ["kanywst"]
+description = "A modern, AI-powered autonomous network reconnaissance agent."
+
+[dependencies]
+tokio = { version = "1.36", features = ["full"] }
+clap = { version = "4.5", features = ["derive", "env"] }
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.12", features = ["json", "stream"] }
+colored = "2.1"
+dotenvy = "0.15"
+async-trait = "0.1"
+futures = "0.3"
+# Using rig-core for Agent capabilities
+rig-core = { git = "https://github.com/0xPlaygrounds/rig", branch = "main" }
+schemars = "0.8"
+indicatif = "0.17" # Progress bars
